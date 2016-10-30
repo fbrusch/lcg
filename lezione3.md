@@ -91,40 +91,33 @@ sia piuttosto difficile...
 `javascript`! (sento, silenzioso e ghiacciato, il sudore colarvi lungo la
 schiena...)
 
-`javascript` è un linguaggio di programmazione bla bla bla...
+Prendiamo una pagina semplice, su codepen, con un solo elemento:
 
-Esiste un modo molto potente per manipolare la nostra pagina html renderizzata,
-mentre è visualizzata: javascript+jquery!
-Prendiamo una pagina semplice, con un solo elemento:
-
-```
+```html
 <p id="messaggio">Ciao</p>
 ```
 
-Ora aggiungiamo questa riga _prima_:
-```
-<script src="https://code.jquery.com/jquery-3.1.1.slim.min.js"
-```
+In _codepen_, aggiungiamo `jQuery` tra i file.
 
-e questa riga _dopo_:
+Nell'editor `js` di codepen, scriviamo.
 
+```javascript
+$("#messaggio").fadeOut()
 ```
-<script> $("#messaggio").fadeOut()</script>
-```
+<iframe height='265' scrolling='no' src='https://codepen.io/fbrusch/embed/wzOXyE/?height=265&theme-id=0&default-tab=html,result&embed-version=2' frameborder='no' allowtransparency='true' allowfullscreen='true' style='width: 100%;'>See the Pen <a href='http://codepen.io/fbrusch/pen/wzOXyE/'>wzOXyE</a> by Francesco Bruschi (<a href='http://codepen.io/fbrusch'>@fbrusch</a>) on <a href='http://codepen.io'>CodePen</a>.
+</iframe>
 
-(In _codepen_ è più semplice etc.)
+Visto che succede? Il paragrafo con id `messaggio` sparisce!
 
-Che cosa abbiamo fatto? Abbiamo aggiunto un _tag_ di tipo _script_. Questo _tag_
-contiene una istruzione in javascript. Che cosa dice, questa istruzione?
+Come è fatta l'istruzione in javascript/jQuery?
 
 Spezziamola in due parti: `$("#messaggio")` e `fadeOut()`.
 
-`$("#messaggio")` utilizza l'operatore `$` offerto da jquery per individuare un
-elemento della nostra pagina. Lo fa utilizzando la stessa notazione del css: in
+`$("#messaggio")` utilizza l'operatore `$` offerto da jquery per individuare un elemento della nostra pagina. Lo fa utilizzando la stessa notazione del css: in
 questo caso l'argomento `"#messaggio"` indica che ci vogliamo riferire all'elemento
 che appunto ha `id` uguale a `"messaggio"`.
 
-Una volta che abbiamo specificato un elemento, possiamo inviargli un _segnale_,
+Una volta che abbiamo specificato un elemento, possiamo inviargli un _segnale_ (anche detto _metodo_),
 che in questo caso si chiama `fadeOut`. La sintassi è quella della _chiamata a funzione_:
 `fadeOut()`.
 
@@ -152,6 +145,26 @@ Ecco che succede:
 <iframe height='265' scrolling='no' src='https://codepen.io/fbrusch/embed/ZpPzmW/?height=265&theme-id=0&default-tab=result&embed-version=2' frameborder='no' allowtransparency='true' allowfullscreen='true' style='width: 100%;'>See the Pen <a href='http://codepen.io/fbrusch/pen/ZpPzmW/'>ZpPzmW</a> by Francesco Bruschi (<a href='http://codepen.io/fbrusch'>@fbrusch</a>) on <a href='http://codepen.io'>CodePen</a>.
 </iframe>
 
+Per ora, mandare segnali agli oggetti non è una cosa di originalità devastante: tutto quello che abbiamo fatto avremmo potuto farlo con regole css!
+
+Ora però immaginiamo di voler fare succedere qualcosa (la scomparsa di un elemento) tipo quando clickiamo su un elemento. Questo in css non è facile (dobbiamo sbatterci con :target, link id etc).
+
+In javascript la cosa è semplice! Ci serve solo un ulteriore strumento: le funzioni (sento il sudore ghiacciare definitivamente...)
+
+Cos'è una funzione? Per ora è una sequenza di comandi raggruppati, che possiamo eseguire come vogliamo! Facciamo subito un esempio:
+
+```javascript
+
+```
+
+
+C'è un'altra notevole categoria di segnali, che vi presento tramite un notevole esempio: `click`:
+
+```javascript
+$("#messaggio")
+```
+
+
 Cosa *non* posso fare con css?
 
   1. nella fiaba ipertestuale: far sparire il primo link
@@ -170,7 +183,7 @@ troppo grande, o mi mancano i colori, oppure le parole (o gli strumenti
 espressivi).
 
 3. customizzare il funzionamento dei click
-4. manipolare il dom (e a che cazzo mi serve?)
+4. manipolare il dom (a cosa mi serve?)
 
 Io vorrei dire: "quando clicco qui sopra, tu sparisci"
 
