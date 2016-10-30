@@ -1,0 +1,158 @@
+<h1 id="introduzione-a-di-javascript-e-jquery">Introduzione a (di) javascript e jquery</h1>
+<h2 id="riassunto-delle-puntate-precedenti">Riassunto delle puntate precedenti</h2>
+<p>Abbiamo visto come, utilizzando un minimo di elementi <code>HTML</code> e di <code>css</code> sia
+possibile strutturare e presentare una storia non-lineare, ipertestuale.</p>
+<p>In particolare, abbiamo utilizzato:</p>
+<ul>
+<li>link (tag <code>&lt;a&gt;</code>) ad elementi della pagina, identificati dalla proprietà
+<code>id</code>. Es:</li>
+</ul>
+<pre><code>
+&lt;div id=&quot;inizio&quot;&gt;
+  C&#39;era una volta...
+
+&lt;/div&gt;
+</code></pre><ul>
+<li>css, classi</li>
+</ul>
+<p>Il trucco che abbiamo usato è:</p>
+<ul>
+<li><p>racchiudiamo le unità narrative in <code>&lt;div&gt;</code> di appartenenti ad una classe,
+(es: <code>&lt;div class=&quot;section&quot;&gt;</code>)</p>
+</li>
+<li><p>alla fine di ogni segmento, esprimiamo le scelte che decideranno il flusso
+della narrazione con una lista di link alternativi:</p>
+</li>
+</ul>
+<pre><code>&lt;div id=&quot;inizio&quot; class=&quot;section&quot;&gt;
+  C&#39;era una volta ...
+  &lt;ul&gt;
+    &lt;li&gt;
+      &lt;a href=&quot;#regina_si_punge&quot;
+        La regina si punse.
+      &lt;/a&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+      &lt;a href=&quot;#regina_non_si_punge&quot;
+        La regina, non si punse.
+      &lt;/a&gt;
+    &lt;/li&gt;
+
+  &lt;/ul&gt;
+&lt;/div&gt;
+</code></pre><ul>
+<li>nel css, diamo una regola che nasconde di default le classi:</li>
+</ul>
+<pre><code>.section {display: none}
+</code></pre><ul>
+<li>aggiungiamo una regola che renda visibile un oggetto di classe <code>section</code>
+quando ci &quot;saltiamo sopra&quot; seguendo un link:</li>
+</ul>
+<pre><code>.section:target {display: block}
+</code></pre><p>In questo modo, otteniamo l&#39;effetto di mostrare soltanto la sezione alla quale
+siamo &quot;saltati&quot; per ultimi. Ovviamente, c&#39;è un problema: visto che inizialmente
+nessuna sezione è nello stato <code>:target</code>, appena caricata la pagina non si vedrà
+niente! Il problema è presto risolto con un&#39;accortezza: un link iniziale, non
+appartenente ad alcuna sezione, che &quot;punta&quot; alla prima sezione della storia:</p>
+<pre><code>&lt;a href=&quot;#incipit&quot;&gt;Cominciamo...&lt;/a&gt;
+</code></pre><p>Nel <em>codepen</em> qui sotto vedete l&#39;effetto complessivo.</p>
+<!--iframe height='265' scrolling='no'
+src='https://codepen.io/fbrusch/embed/qagaXE/?height=265&theme-id=0&default-tab=html,result&embed-version=2'
+frameborder='no' allowtransparency='true' allowfullscreen='true' style='width:
+100%;'>See the Pen <a href='http://codepen.io/fbrusch/pen/qagaXE/'>qagaXE</a> by
+Francesco Bruschi (<a href='http://codepen.io/fbrusch'>@fbrusch</a>) on <a
+href='http://codepen.io'>CodePen</a>. </iframe-->
+<p>Ottimo. A parte per il fatto che il link &quot;di startup&quot; rimane costantemente
+visibile.</p>
+<p>E&#39; possibile farlo sparire, solo tramite css? Non lo so. Mi pare che comunque,
+sia piuttosto difficile...</p>
+<p>&Egrave; il momento di procurarsi un&#39;altra freccia da scoccare  all&#39;occorrenza:
+<code>javascript</code>! (sento, silenzioso e ghiacciato, il sudore colarvi lungo la
+schiena...)</p>
+<p>Prendiamo una pagina semplice, su codepen, con un solo elemento:</p>
+<pre><code class="lang-html">&lt;p id=&quot;messaggio&quot;&gt;Ciao&lt;/p&gt;
+</code></pre>
+<p>In <em>codepen</em>, aggiungiamo <code>jQuery</code> tra i file.</p>
+<p>Nell&#39;editor <code>js</code> di codepen, scriviamo.</p>
+<pre><code class="lang-javascript">$(&quot;#messaggio&quot;).fadeOut()
+</code></pre>
+<iframe height='265' scrolling='no' src='https://codepen.io/fbrusch/embed/wzOXyE/?height=265&theme-id=0&default-tab=html,result&embed-version=2' frameborder='no' allowtransparency='true' allowfullscreen='true' style='width: 100%;'>See the Pen <a href='http://codepen.io/fbrusch/pen/wzOXyE/'>wzOXyE</a> by Francesco Bruschi (<a href='http://codepen.io/fbrusch'>@fbrusch</a>) on <a href='http://codepen.io'>CodePen</a>.
+</iframe>
+
+<p>Visto che succede? Il paragrafo con id <code>messaggio</code> sparisce!</p>
+<p>Come è fatta l&#39;istruzione in javascript/jQuery?</p>
+<p>Spezziamola in due parti: <code>$(&quot;#messaggio&quot;)</code> e <code>fadeOut()</code>.</p>
+<p><code>$(&quot;#messaggio&quot;)</code> utilizza l&#39;operatore <code>$</code> offerto da jquery per individuare un elemento della nostra pagina. Lo fa utilizzando la stessa notazione del css: in
+questo caso l&#39;argomento <code>&quot;#messaggio&quot;</code> indica che ci vogliamo riferire all&#39;elemento
+che appunto ha <code>id</code> uguale a <code>&quot;messaggio&quot;</code>.</p>
+<p>Una volta che abbiamo specificato un elemento, possiamo inviargli un <em>segnale</em> (anche detto <em>metodo</em>),
+che in questo caso si chiama <code>fadeOut</code>. La sintassi è quella della <em>chiamata a funzione</em>:
+<code>fadeOut()</code>.</p>
+<p>Ecco quello che succede (cliccate su <code>rerun</code> in basso a sinistra per rivedere
+l&#39;effetto):</p>
+<iframe height='265' scrolling='no'
+src='https://codepen.io/fbrusch/embed/GjZKGB/?height=265&theme-id=0&default-tab=html,result&embed-version=2'
+frameborder='no' allowtransparency='true' allowfullscreen='true' style='width:
+100%;'>See the Pen <a href='http://codepen.io/fbrusch/pen/GjZKGB/'>GjZKGB</a> by
+Francesco Bruschi (<a href='http://codepen.io/fbrusch'>@fbrusch</a>) on <a href="a
+href=&#39;http://codepen.io&#39;">a
+href=&#39;http://codepen.io&#39;</a>CodePen</a>. </iframe>
+
+<p>Ci sono altri segnali? Certamente!</p>
+<p>Un altro è <code>css</code>, che consente di cambiare proprietà di visualizzazione di un
+elemento:</p>
+<pre><code>$(&quot;#messaggio&quot;).css({&quot;color&quot;:&quot;red&quot;})
+</code></pre><p>Ecco che succede:</p>
+<iframe height='265' scrolling='no' src='https://codepen.io/fbrusch/embed/ZpPzmW/?height=265&theme-id=0&default-tab=result&embed-version=2' frameborder='no' allowtransparency='true' allowfullscreen='true' style='width: 100%;'>See the Pen <a href='http://codepen.io/fbrusch/pen/ZpPzmW/'>ZpPzmW</a> by Francesco Bruschi (<a href='http://codepen.io/fbrusch'>@fbrusch</a>) on <a href='http://codepen.io'>CodePen</a>.
+</iframe>
+
+<p>Per ora, mandare segnali agli oggetti non è una cosa di originalità devastante: tutto quello che abbiamo fatto avremmo potuto farlo con regole css!</p>
+<p>Ora però immaginiamo di voler fare succedere qualcosa (la scomparsa di un elemento) tipo quando clickiamo su un elemento. Questo in css non è facile (dobbiamo sbatterci con :target, link id etc).</p>
+<p>In javascript la cosa è semplice! Ci serve solo un ulteriore strumento: le funzioni (sento il sudore ghiacciare definitivamente...)</p>
+<p>Cos&#39;è una funzione? Per ora è una sequenza di comandi raggruppati, che possiamo eseguire come vogliamo! Facciamo subito un esempio:</p>
+<pre><code class="lang-javascript">
+
+</code></pre>
+<p>C&#39;è un&#39;altra notevole categoria di segnali, che vi presento tramite un notevole esempio: <code>click</code>:</p>
+<pre><code class="lang-javascript">$(&quot;#messaggio&quot;)
+</code></pre>
+<p>Cosa <em>non</em> posso fare con css?</p>
+<ol>
+<li>nella fiaba ipertestuale: far sparire il primo link</li>
+<li>far comparire sottostorie</li>
+<li>certe meccaniche di avanzamento (tipo: lanciare dadi, oppure
+sfidare l&#39;abilità dell&#39;utente)</li>
+</ol>
+<p>css è dichiarativo: che è cosa buona, ma in questo caso limitante.</p>
+<p>Tecnicamente, il css mi dice &quot;dimmi cosa vuoi fare (il risultato che vuoi
+ottenere), a come farlo ci penso io&quot;.</p>
+<p>Ma a volte, non è facile (oppure è proprio impossibile) descrivere in css quello
+che voglio. Il mio potere espressivo è limitato, come quando ho un pennello
+troppo grande, o mi mancano i colori, oppure le parole (o gli strumenti
+espressivi).</p>
+<ol>
+<li>customizzare il funzionamento dei click</li>
+<li>manipolare il dom (a cosa mi serve?)</li>
+</ol>
+<p>Io vorrei dire: &quot;quando clicco qui sopra, tu sparisci&quot;</p>
+<p>Primo esercizio: far sparire il link &quot;iniziale&quot;</p>
+<p>cos&#39;è jquery? una libreria che ci semplifica il lavoro!
+possiamo considerare singoli elementi tramite l&#39;id, e farci un sacco di cose:</p>
+<ul>
+<li>cambiare proprietà di un elemento (tipo possiamo muovere un elemento agendo su
+un elemento relative, agendo su top e left)</li>
+<li>definire azioni quando ci clicchiamo sopra, o altre amenità (click, hover)</li>
+<li>combinare più comandi in funzioni (sai che spasso)</li>
+<li>inserire il tempo! fare cose a distanza di tempo, oppure fare cose ogni tot
+tempo...</li>
+<li>possiamo AUTOMATIZZARE, creare meccanismi meravigliosi, che faranno rimanere i
+nostri amici a bocca aperta...</li>
+</ul>
+<p>Per prima cosa, vogliamo realizzare un semplice gioco da superare per cominciare
+con la storia.</p>
+<p>alert(&quot;ora cambio la classe del titolo&quot;)
+$(&quot;#titolo&quot;).toggleClass()</p>
+<p>jquery semplifica, usiamolo</p>
+<p>javascript + jquery -&gt; possiamo manipolare programmaticamente il dom, ovvero:
+API per il dom</p>
+
