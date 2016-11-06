@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <link href='https://fonts.googleapis.com/css?family=Chivo:900' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-dark.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <title>Lcg by fbrusch</title>
+  </head>
+
+  <body>
+      <div class="inner">
+          <h1 id="flapping-birds">Flapping birds</h1>
+<p>Oggi vogliamo arrivare qui:</p>
+<p><p data-height="265" data-theme-id="0" data-slug-hash="xRxybr" data-default-tab="js,result" data-user="fbrusch" data-embed-version="2" data-pen-title="xRxybr" class="codepen">See the Pen <a href="http://codepen.io/fbrusch/pen/xRxybr/">xRxybr</a> by Francesco Bruschi (<a href="http://codepen.io/fbrusch">@fbrusch</a>) on <a href="http://codepen.io">CodePen</a>.</p></p>
+<script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
+
+<p>Partiamo realizzando un semplice contatore: un oggetto che conta quante volte gli clicchiamo sopra.</p>
+<p>Per prima cosa nell&#39;html creiamo un oggetto mostri il numero:</p>
+<pre><code class="lang-html">&lt;div id=&quot;numero&quot;&gt;0&lt;/div&gt;
+</code></pre>
+<p>Diamogli un po&#39; di stile:</p>
+<pre><code class="lang-css">#numero {
+  font-size: 60px;
+  border: 3px solid black;
+  font-family:monospace;
+  height:70px;
+  display:inline-block;
+}
+</code></pre>
+<p>Ok, ora diamo vita all&#39;oggetto. Cosa vogliamo? Che ogni volta che
+ci clicchiamo sopra, questo aumenti il valore di 1. Per farlo, introduciamo le <em>variabili</em>! Possiamo vedere le variabili come dei contenitori di valori con un nome. Un esempio vale più
+di mille parole:</p>
+<pre><code class="lang-javascript">var x = 42;
+</code></pre>
+<p>In questo esempio, ho <em>dichiarato</em> una variabile: possiamo pensare la
+a questa dichiarazione come alla creazione di un contenitore di nome <code>x</code>.
+Oltre a creare <code>x</code>, gli ho anche assegnato (&quot;messo dentro&quot;) un valore, <code>42</code>.
+Fantastico, e ora che me ne faccio?
+Beh, per esempio posso usare <code>x</code> come argomento di un&#39;<code>alert</code>:</p>
+<pre><code class="lang-javascript">alert(x);
+</code></pre>
+<p>Inoltre, posso cambiare il valore contenuto in <code>x</code>:</p>
+<pre><code class="lang-javascript">x = 10;
+alert(x);
+</code></pre>
+<p>Posso anche cambiare il valore di una variabile <em>relativamente</em> al suo
+valore attuale:</p>
+<pre><code class="lang-javascript">x = x + 1;
+</code></pre>
+<p>La cosa interessante è che anche le funzioni possono usare le variabili:</p>
+<pre><code class="lang-javascript">incrementa_x = function() {
+  x = x + 1;
+}
+</code></pre>
+<p>Se chiamo <code>incrementa_x</code>, non soprendentemente, <code>x</code> aumenta di <code>1</code>.</p>
+<pre><code class="lang-javascript">incrementa_x();
+</code></pre>
+<p>Ok, abbiamo quasi tutto quello che ci serve per finalizzare il nostro contatore.
+L&#39;ultimo ingrediente è contettualmente banale: un segnale jquery con cui possiamo cambiare il testo: <code>text</code>.</p>
+<p>Quindi: scriviamo una funzione che incrementa <code>x</code> e che scrive il valore di <code>x</code> nell&#39;elemento <code>#numero</code>, e diciamo a <code>#numero</code> di invocarla ad ogni click:</p>
+<pre><code class="lang-javascript">x = 0
+
+incrementa = function() {
+  x = x+1;
+  $(&quot;#numero&quot;).text(x)
+}
+
+$(&quot;#numero&quot;).click(incrementa)
+</code></pre>
+<p>Ecco il risultato, fino a questo punto:</p>
+<p><p data-height="265" data-theme-id="0" data-slug-hash="NbPgdb" data-default-tab="css,result" data-user="fbrusch" data-embed-version="2" data-pen-title="NbPgdb" class="codepen">See the Pen <a href="http://codepen.io/fbrusch/pen/NbPgdb/">NbPgdb</a> by Francesco Bruschi (<a href="http://codepen.io/fbrusch">@fbrusch</a>) on <a href="http://codepen.io">CodePen</a>.</p></p>
+<script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
+
+<p>Esercizio: modifica il codice in modo che il numero sia rappresentato, invece
+che &quot;testualmente&quot;, tramite la lunghezza di una barra.
+(suggerimento: create un <code>&lt;div&gt;</code> con un certo <code>background-color</code>, e giocate sulla <code>width</code>).
+Una possibile soluzione la trovate</p>
+<p><a href="http://codepen.io/fbrusch/pen/rWaGmW">qui</a>.</p>
+<p>E se invece volessimo fare un contatore temporizzato, che aumenta automaticamente?</p>
+<p>Potremmo avvalerci di un paio di notevoli funzioni che ci vengono fornite:
+<code>setTimeout</code> e <code>setInterval</code>.</p>
+<p><code>setTimeout</code> consente di chiamare una funzione, ma nel futuro!</p>
+<p>Esempio: questa chiamata a funzione:</p>
+<pre><code class="lang-javascript">setTimeout(incrementa_x, 1000)
+</code></pre>
+<p>significa: &quot;tra 1000 millisecondi (cioè tra un secondo), per favore chiama la funzione incrementa_x&quot;</p>
+<p>Ora prendiamo questa sequenza di istruzioni:</p>
+<pre><code class="lang-javascript">setTimeout(incrementa_x, 1000)
+setTimeout(incrementa_x, 2000)
+setTimeout(incrementa_x, 3000)
+</code></pre>
+<p>Attenzione: le tre istruzioni vengono eseguite una dopo l&#39;altra, immediatamente, senza aspettare il tempo di timeout di ciascuna. Ogni chiamata &quot;si segna&quot; da qualche parte che tra un certo tempo dovrà fare qualcosa, e poi si prosegue con l&#39;istruzione seguente (tecnicamente, si dice che setTimeout non è <em>bloccante</em>, oppure anche che è <em>asincrona</em>).</p>
+<p>Se volessimo far continuare il contatore fino a 100, o a 1000, cosa dovremmo fare? Mettere 100 o 1000 chiamate a <code>setTimeout</code>?
+Ovviamente no! Ci sono un paio di sistemi che possiamo utilizzare.
+Il primo è uno dei <em>trucchi</em> più potenti e devastanti dell&#39;informatica, che fa deragliare da decenni le coscienze degli studenti più sensibili. Quindi, tenetevi forte! Ve lo propongo così, a crudo, in tutto il suo diabolico splendore:</p>
+<pre><code class="lang-javascript">var x = 0;
+
+incrementa_per_sempre = function() {
+  x = x+1;
+  $(&quot;#numero&quot;).text(x)
+  setTimeout(incrementa_per_sempre, 1000)
+}
+
+incrementa_per_sempre()
+</code></pre>
+<p><p data-height="265" data-theme-id="0" data-slug-hash="MbYEvy" data-default-tab="js,result" data-user="fbrusch" data-embed-version="2" data-pen-title="MbYEvy" class="codepen">See the Pen <a href="http://codepen.io/fbrusch/pen/MbYEvy/">MbYEvy</a> by Francesco Bruschi (<a href="http://codepen.io/fbrusch">@fbrusch</a>) on <a href="http://codepen.io">CodePen</a>.</p></p>
+<script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
+
+<p>Il trucco è fare in modo che la funzione di incremento, prima di terminare,
+programmi di richiamare sé stessa, in questo caso dopo un secondo!
+Prendetevi qualche minuto per rifletterci, e vedrete che la cosa ha senso...</p>
+<p>L&#39;altro sistema è utilizzare <code>setInterval</code>, un&#39;altra funzione fornita da javascript<code>.</code>setInterval` significa
+&quot;chiama questa funzione ogni tot tempo, a partire da ora&quot;.</p>
+<p>In questo caso, per far avanzare indefinitamente il nostro contatore,
+ci basterà questa istruzione:</p>
+<pre><code class="lang-javascript">setInterval(incrementa_x, 1000)
+</code></pre>
+<p>Esercizio: realizza un contatore che incrementa automaticamente ogni secondo,
+e che decrementa di uno quando ci si clicca sopra.
+Soluzione: <a href="http://codepen.io/fbrusch/pen/eBmeVK">http://codepen.io/fbrusch/pen/eBmeVK</a></p>
+<h2 id="scelte">Scelte</h2>
+<p>Immaginiamo di voler fare qualcosa quando il contatore arriva ad un certo
+valore... per esempio, vogliamo visualizzare un messaggio.
+Vorremmo poter mettere nella funzione un&#39;istruzione del tipo &quot;se x vale 20,
+alert(&#39;ciao&#39;)&quot;.
+Vogliamo cioè che venga eseguita un&#39;istruzione solo se una certa <em>condizione</em>
+è vera. Questo è possibile con i <em>costrutti condizionali</em>, dei quali il più
+fondamentale è l&#39;<code>if-else</code>.
+Come al solito, due righe di codice valgono 1000 parole:</p>
+<pre><code class="lang-javascript">incrementa_x = function() {
+  x = x+1;
+  if(x==20) {alert(&quot;e con questo sono 20!&quot;)}
+  $(&quot;#numero&quot;).text(x)
+}
+</code></pre>
+<p><p data-height="265" data-theme-id="0" data-slug-hash="MbYOPG" data-default-tab="result" data-preview="true" data-user="fbrusch" data-embed-version="2" data-pen-title="MbYOPG" class="codepen">See the Pen <a href="http://codepen.io/fbrusch/pen/MbYOPG/">MbYOPG</a> by Francesco Bruschi (<a href="http://codepen.io/fbrusch">@fbrusch</a>) on <a href="http://codepen.io">CodePen</a>.</p></p>
+<script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
+
+<h2 id="birds">Birds</h2>
+<p>Ok, abbiamo tutti gli strumenti concettuali per costruire il nostro minigioco.</p>
+<p>Partiamo costruendo il campo (il cielo). Cerchiamo un&#39;immagine che ci piaccia,
+segnamoci l&#39;url e mettiamolo come sfondo di un <code>div</code>:</p>
+<pre><code class="lang-html">&lt;div id=&quot;sky&quot;&gt;&lt;/div&gt;
+</code></pre>
+<pre><code class="lang-css">#sky {
+  background-image:url(&quot;http://orig15.deviantart.net/e5c9/f/2008/046/d/f/clouds___high_speed_pixel_art_by_harunaakatsuki.gif&quot;);
+  height:100vh;
+  background-size:cover;
+}
+</code></pre>
+<p><p data-height="265" data-theme-id="0" data-slug-hash="GNgObN" data-default-tab="css,result" data-user="fbrusch" data-embed-version="2" data-pen-title="Birds1" class="codepen">See the Pen <a href="http://codepen.io/fbrusch/pen/GNgObN/">Birds1</a> by Francesco Bruschi (<a href="http://codepen.io/fbrusch">@fbrusch</a>) on <a href="http://codepen.io">CodePen</a>.</p></p>
+<script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
+
+<p>Ok, ora popoliamo il cielo. Anche il nostro uccellino sarà un <code>div</code> con
+l&#39;immagine che vogliamo come sfondo.</p>
+<pre><code class="lang-html">&lt;div id=&quot;sky&quot;&gt;
+  &lt;div id=&quot;bird&quot;&gt;&lt;/div&gt;
+&lt;/div&gt;
+</code></pre>
+<pre><code class="lang-css">#bird {
+  position: absolute;
+  background-image:url(&quot;http://4.bp.blogspot.com/-K4EwEffuk5Q/VTVBf8Wq-8I/AAAAAAAACZ0/IYLT3b-Xkko/s1600/flappybird.png&quot;);
+  height:200px;
+  width:300px;
+  background-size:cover;
+  image-render:pixelated;
+}
+</code></pre>
+<p>Facciamo attenzione alla proprietà <code>position</code>, settata ad <code>absolute</code>: questo
+fa sì che potremo specificare, tramite le proprietà <code>top</code> e <code>left</code>, la posizione
+del nostro oggetto all&#39;interno dell&#39;elemento contenitore. Agendo su queste
+proprietà potremo muovere il nostro uccellino!</p>
+<p><p data-height="265" data-theme-id="0" data-slug-hash="aBzVgr" data-default-tab="css,result" data-user="fbrusch" data-embed-version="2" data-pen-title="Birds2" class="codepen">See the Pen <a href="http://codepen.io/fbrusch/pen/aBzVgr/">Birds2</a> by Francesco Bruschi (<a href="http://codepen.io/fbrusch">@fbrusch</a>) on <a href="http://codepen.io">CodePen</a>.</p></p>
+<script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
+
+<p>Ok, ora facciamolo muovere. Partiamo con una meccanica semplice: ogni 500 millisecondi due variabili <code>x</code> e <code>y</code> vengono cambiate casualmente, e le coordinate <code>left</code> e <code>top</code> dell&#39;uccellino cambiate di conseguenza.</p>
+<p>Per generare le posizioni casuali, usiamo <code>Math.random</code>:</p>
+<pre><code class="lang-javascript">
+var x = 0;
+var y = 0;
+
+move_bird = function() {
+  x = Math.random()*1000;
+  y = Math.random()*500;
+  $(&quot;#bird&quot;).animate({
+    top:y,
+    left:x
+  },500)
+}
+
+setInterval(move_bird, 500)
+</code></pre>
+<p><p data-height="265" data-theme-id="0" data-slug-hash="qqEpEB" data-default-tab="css,result" data-user="fbrusch" data-embed-version="2" data-pen-title="Birds2" data-preview="true" class="codepen">See the Pen <a href="http://codepen.io/fbrusch/pen/qqEpEB/">Birds2</a> by Francesco Bruschi (<a href="http://codepen.io/fbrusch">@fbrusch</a>) on <a href="http://codepen.io">CodePen</a>.</p></p>
+<script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
+
+<p>Esercizi:</p>
+<ol>
+<li>Fai in modo quando si becca l&#39;uccellino compaia un messaggio
+(per esempio tramite <code>alert</code>)</li>
+<li>Introdurre un numero massimo di tentativi: dopo 3 tentativi in cui non
+si colpisce l&#39;uccellino, far comparire un altro messaggio</li>
+</ol>
+<h2 id="sprite">Sprite</h2>
+<p>Ok, ora rilassiamoci con un&#39;impresa tipicamente da designer: facciamo sbattere le ali al nostro uccellino! Cominciamo con una questione di leggerezza parmenidea: che cos&#39;è il movimento?
+Immaginiamo quello che Zenone tendeva ad escludere, (ma i fratelli Lumiere no!): che il movimento sia una successione di stati diversi in istanti successivi. Procuriamoci gli stati dell&#39;uccellino nel suo regale battere d&#39;ali, tutti nella stessa immagine:</p>
+<p><p data-height="265" data-theme-id="0" data-slug-hash="VmYyXp" data-default-tab="result" data-preview="true" data-user="fbrusch" data-embed-version="2" data-pen-title="VmYyXp" class="codepen">See the Pen <a href="http://codepen.io/fbrusch/pen/VmYyXp/">VmYyXp</a> by Francesco Bruschi (<a href="http://codepen.io/fbrusch">@fbrusch</a>) on <a href="http://codepen.io">CodePen</a>.</p></p>
+<script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
+
+<p>Abbiamo dimesionato il <code>div</code> di classe <code>flapping-bird</code> in modo da &quot;inquadrare&quot; soltanto il primo frame del battito. Ora faremo in modo di far &quot;spostare&quot; nel tempo l&#39;inquadratura sugli altri frame. Per fare questo utilizziamo le animazioni css. &Egrave; semplicissimo!
+Per prima cosa, si definisce l&#39;animazione, con il costrutto &quot;@keyframes&quot;:</p>
+<pre><code class="lang-css">@keyframes flap {
+    0% {background-position: 0px 0px;}
+    100% {background-position: 0px -184px;}
+}
+</code></pre>
+<p>Quindi, si indica che questa animazione verrà usata nella class <code>flapping-bird</code>:</p>
+<pre><code class="lang-css">
+.flapping-bird {
+  [...]
+  animation: flap 0.5s infinite;
+}
+</code></pre>
+<p>Ecco il risultato:</p>
+<p><p data-height="265" data-theme-id="0" data-slug-hash="jVEYXJ" data-default-tab="css,result" data-user="fbrusch" data-embed-version="2" data-pen-title="jVEYXJ" data-preview="true" class="codepen">See the Pen <a href="http://codepen.io/fbrusch/pen/jVEYXJ/">jVEYXJ</a> by Francesco Bruschi (<a href="http://codepen.io/fbrusch">@fbrusch</a>) on <a href="http://codepen.io">CodePen</a>.</p></p>
+<script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
+
+<p>C&#39;è qualcosa che non va! Non vogliamo che l&#39;inquadratura scorra da un frame all&#39;altro, vogliamo che uno scompaia e che l&#39;altro appaia! Possiamo ottenere questo risultato utilizzando il modificatore <code>steps</code> nell&#39;animazione, che dice di spezzare l&#39;animazione in un certo numero di passi discreti:</p>
+<pre><code class="lang-css">
+  [...]
+  animation: flap 0.5s infinite steps(2);
+  [...]
+</code></pre>
+<p>Ora forse va meglio:</p>
+<p><p data-height="265" data-theme-id="0" data-slug-hash="bBNaZQ" data-default-tab="css,result" data-user="fbrusch" data-embed-version="2" data-pen-title="bBNaZQ" class="codepen">See the Pen <a href="http://codepen.io/fbrusch/pen/bBNaZQ/">bBNaZQ</a> by Francesco Bruschi (<a href="http://codepen.io/fbrusch">@fbrusch</a>) on <a href="http://codepen.io">CodePen</a>.</p></p>
+<script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
+
+<p>Esercizi:</p>
+<ol>
+<li>modifica il css in modo da sfruttare tutti e tre i frame</li>
+<li>trasporta il flapping bird animato nel gioco</li>
+</ol>
+
+
+      </div>
+  </body>
+</html>
