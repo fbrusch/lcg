@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <link href='https://fonts.googleapis.com/css?family=Chivo:900' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-dark.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <title>Lcg by fbrusch</title>
+  </head>
+
+  <body>
+      <div class="inner">
+          <h1 id="fisica-sintetica">Fisica sintetica</h1>
+<h2 id="giocare-a-fare-dio">Giocare a fare Dio</h2>
+<p>Proviamo a riprodurre comportamenti fisici realistici in una pagina HTML. Questo ci servirà per un sacco di cose.</p>
+<p>Partiamo da una situazione semplice: un singolo oggetto all&#39;interno di un&#39;universo di dimensioni limitate.</p>
+<p>Rappresentiamo sia l&#39;universo che l&#39;oggetto come <code>div</code>, uno contenuto nell&#39;altro:</p>
+<pre><code class="lang-html">&lt;div id=&quot;universe&quot;&gt;
+  &lt;div id=&quot;obj&quot;&gt;&lt;/div&gt;
+&lt;/div&gt;
+</code></pre>
+<pre><code class="lang-css">#universe {
+  height: 500px;
+  width: 500px;
+  border: 1px solid black;
+}
+
+#obj {
+  height: 30px;
+  width: 30px;
+  background-color: red;
+}
+</code></pre>
+<p><p data-height="265" data-theme-id="0" data-slug-hash="PbmREw" data-default-tab="result" data-user="fbrusch" data-embed-version="2" data-pen-title="PbmREw" class="codepen">See the Pen <a href="http://codepen.io/fbrusch/pen/PbmREw/">PbmREw</a> by Francesco Bruschi (<a href="http://codepen.io/fbrusch">@fbrusch</a>) on <a href="http://codepen.io">CodePen</a>.</p></p>
+<script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
+
+<p>Tutto molto bello, e <em>statico</em>. Parmenide sarebbe soddisfatto. Ora immaginiamo di voler sconvolgere tutto, ed introdurre un po&#39; di <em>movimento</em>.</p>
+<p>Vi propongo questa visione metafisica: descriviamo il nostro oggetto tramite la sua <em>posizione</em>. Per semplificare le cose, rendiamo il nostro universo monodimensionale:</p>
+<pre><code class="lang-css">#universe {
+  height: 30px;
+  width: 500px;
+  border: 1px solid black;
+}
+</code></pre>
+<p><p data-height="265" data-theme-id="0" data-slug-hash="jVmzvm" data-default-tab="css,result" data-user="fbrusch" data-embed-version="2" data-pen-title="jVmzvm" class="codepen">See the Pen <a href="http://codepen.io/fbrusch/pen/jVmzvm/">jVmzvm</a> by Francesco Bruschi (<a href="http://codepen.io/fbrusch">@fbrusch</a>) on <a href="http://codepen.io">CodePen</a>.</p></p>
+<script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
+
+<p>Rendiamo la posizione dell&#39;oggetto assoluta, in modo da poter specificare, tramite <code>css</code>, la sua posizione:</p>
+<pre><code class="lang-css">#obj {
+  [...]
+  position: absolute;
+  left: 0px;
+  top: 0px;
+}
+</code></pre>
+<p>Ora mettiamola in moto. Come facciamo? Vi propongo questa visione metafisica, descritta sinteticamente dallo sconvolgente potere espressivo di <code>javascript</code>.</p>
+<p>Cominciamo con il dichiarare una variabile con la quale descriveremo in ogni momento la posizione di <code>obj</code>:</p>
+<pre><code class="lang-javascript">var x = 0;
+</code></pre>
+<p><p data-height="265" data-theme-id="0" data-slug-hash="aBWYXQ" data-default-tab="css,result" data-user="fbrusch" data-embed-version="2" data-pen-title="aBWYXQ" class="codepen">See the Pen <a href="http://codepen.io/fbrusch/pen/aBWYXQ/">aBWYXQ</a> by Francesco Bruschi (<a href="http://codepen.io/fbrusch">@fbrusch</a>) on <a href="http://codepen.io">CodePen</a>.</p></p>
+<script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
+
+<p>Ok, questa variabile descrive, nell&#39;iperuranio, la posizione della variabile <code>x</code>. Il brutto è che, se modifichiamo <code>x</code>, la posizione del nostro oggetto non cambia...</p>
+<p><p data-height="265" data-theme-id="0" data-slug-hash="aBWGKb" data-default-tab="css,result" data-user="fbrusch" data-embed-version="2" data-pen-title="aBWGKb" class="codepen">See the Pen <a href="http://codepen.io/fbrusch/pen/aBWGKb/">aBWGKb</a> by Francesco Bruschi (<a href="http://codepen.io/fbrusch">@fbrusch</a>) on <a href="http://codepen.io">CodePen</a>.</p></p>
+<script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
+
+
+<p>Perché? Perché non abbiamo collegato l&#39;iperuranio con il mondo fisico!</p>
+<p>Per farlo, definiamo una funzione che modifica la posizione di <code>obj</code> in accordo con il valore di <code>x</code>:</p>
+<pre><code class="lang-javascript">disegna = function() {
+  $(&quot;#obj&quot;).css(
+    {
+      left: x
+    }
+  )
+};
+</code></pre>
+<p>Come sappiamo ormai perfettamente, perché una funzione definita faccia qualcosa, la dobbiamo <em>invocare</em>:</p>
+<pre><code class="lang-javascript">disegna()
+</code></pre>
+<p><p data-height="265" data-theme-id="0" data-slug-hash="wodjXy" data-default-tab="css,result" data-user="fbrusch" data-embed-version="2" data-pen-title="wodjXy" class="codepen">See the Pen <a href="http://codepen.io/fbrusch/pen/wodjXy/">wodjXy</a> by Francesco Bruschi (<a href="http://codepen.io/fbrusch">@fbrusch</a>) on <a href="http://codepen.io">CodePen</a>.</p></p>
+<script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
+
+<p>D&#39;accordo, ma è ancora tutto molto statico!
+Come facciamo ad introdurre il movimento? Beh, potremmo modificare la posizione di <code>obj</code> nel tempo! E come?
+Per prima cosa, definiamo una funzione che, quando invocata, modifica <code>x</code>:</p>
+<pre><code class="lang-javascript">function muovi() {
+  x = x + 1;
+}
+</code></pre>
+<p>Quindi, facciamo in modo che la funzione venga chiamata ogni tot tempo. Nell&#39;universo che stiamo creando, la <code>x</code> viene aggiornata ogni 10 millisecondi (l&#39;intervallo, come capite, e del tutto arbitrario...)</p>
+<pre><code class="lang-javascript">setInterval(muovi, 100)
+</code></pre>
+<p><p data-height="265" data-theme-id="0" data-slug-hash="ENmLOx" data-default-tab="css,result" data-user="fbrusch" data-embed-version="2" data-pen-title="ENmLOx" class="codepen">See the Pen <a href="http://codepen.io/fbrusch/pen/ENmLOx/">ENmLOx</a> by Francesco Bruschi (<a href="http://codepen.io/fbrusch">@fbrusch</a>) on <a href="http://codepen.io">CodePen</a>.</p></p>
+<script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
+
+<p>Ma l&#39;oggetto ancora non si muove...
+Perché?</p>
+<p>[Esercizio: far muovere l&#39;oggetto...]</p>
+<p>Perché <code>disegna</code> viene invocata una volta sola, all&#39;inizio! Il nostro demiurgo deve lavorare più sodo, e sincronizzare la posizione di <code>obj</code> con la <code>x</code> più spesso!</p>
+<p>Per farglielo fare, aggiungiamo un altro <code>setInterval</code>, ovviamente:</p>
+<pre><code class="lang-javascript">[...]
+setInterval(muovi, 100)
+setInterval(disegna, 100)
+</code></pre>
+<p>Et voilà!</p>
+<p><p data-height="265" data-theme-id="0" data-slug-hash="ENmLOx" data-default-tab="css,result" data-user="fbrusch" data-embed-version="2" data-pen-title="ENmLOx" class="codepen">See the Pen <a href="http://codepen.io/fbrusch/pen/ENmLOx/">ENmLOx</a> by Francesco Bruschi (<a href="http://codepen.io/fbrusch">@fbrusch</a>) on <a href="http://codepen.io">CodePen</a>.</p></p>
+<script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
+
+<p>Abbiate la pazienza di vedere il nostro oggetto che supera indomito e incosciente le colonne d&#39;Ercole del bordo destro dell&#39;universo...</p>
+<p>Come facciamo a contenerlo?</p>
+<p>Per rispondere alla domanda, vi propongo una riflessione...</p>
+<p>Come faremmo, se volessimo cambiare la <em>velocità</em> di <code>obj</code>? Dovremmo agire sul <code>+ 1</code> con il quale incrementiamo la <code>x</code> ad ogni invocazione di <code>muovi</code>. Quindi, quell&#39;<code>1</code> è proprio la velocità dell&#39;oggetto!
+Propongo di fare questa piccola modifica: rappresentare anche la velocità con una variabile:</p>
+<pre><code class="lang-javascript">var x = 100;
+var vx = 1;
+
+function muovi() {
+  x = x + vx;
+}
+</code></pre>
+<p>E qual è il vantaggio? Che anche la velocità può essere cambiata!
+In particolare, potremmo codare nella funzione <code>muovi</code> che, quando <code>obj</code> arriva alla fine dell&#39;universo, se ne torna indietro, cioè che <em>inverte la sua velocità</em>!</p>
+<p>[Esercizio: far invertire la velocità di <code>obj</code> alla fine dell&#39;universo]</p>
+<pre><code class="lang-javascript">function muovi() {
+  x = x + vx;
+  if(x&gt;500) vx = -vx;
+}
+</code></pre>
+<p>[Esercizio: evitare lo &quot;sbordamento&quot; di <code>obj</code> alla fine dell&#39;universo]
+[Esercizio: fare rimbalzare <code>obj</code> anche quando torna indietro, all&#39;inizio dell&#39;universo]</p>
+<p>Ora che abbiamo delle leggi della fisica che agiscono sulla velocità, possiamo osare qualcosa di leggermente più complicato. Tipo: introdurre la gravità! La gravità è una forza che, per come la sperimentiamo in condizioni ordinarie, fa una cosa semplice: accellera un corpo in modo costante, cioè: aumenta la velocità nel tempo in modo costante.</p>
+<p>Per introdurla, nel nostro miniuniverso, ci basterà codare in <code>muovi</code> questo semplice fatto:</p>
+<pre><code class="lang-javascript">function muovi() {
+  vx = vx + 0.1;
+  [...]
+}
+</code></pre>
+<p><p data-height="265" data-theme-id="0" data-slug-hash="yVbEzL" data-default-tab="js,result" data-user="fbrusch" data-embed-version="2" data-pen-title="yVbEzL" class="codepen">See the Pen <a href="http://codepen.io/fbrusch/pen/yVbEzL/">yVbEzL</a> by Francesco Bruschi (<a href="http://codepen.io/fbrusch">@fbrusch</a>) on <a href="http://codepen.io">CodePen</a>.</p></p>
+<script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
+
+<p>[Esercizio: come rendere l&#39;animazione più fluida?]</p>
+<p>Per rendere l&#39;animazione più fluida, aumentiamo la frequenza con cui <code>muovi</code> e <code>disegna</code> vengono chiamate:</p>
+<p><p data-height="265" data-theme-id="0" data-slug-hash="JbNZMN" data-default-tab="js,result" data-user="fbrusch" data-embed-version="2" data-pen-title="JbNZMN" class="codepen">See the Pen <a href="http://codepen.io/fbrusch/pen/JbNZMN/">JbNZMN</a> by Francesco Bruschi (<a href="http://codepen.io/fbrusch">@fbrusch</a>) on <a href="http://codepen.io">CodePen</a>.</p></p>
+<script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
+
+<p>Un&#39;altra cosa che esperiamo nel nostro rapporto con gli oggetti della fisica è l&#39;<em>attrito</em>: difficilmente vedremo rimbalzare un oggetto come nel nostro universo sintetico!</p>
+<p>Cosa fa l&#39;attrito (in questo caso <em>dinamico</em>)? Agisce coma una forza opposta alla velocità e proporzionale al suo modulo. L&#39;effetto netto è che ad ogni passo la velocità viene ridotta di una certa percentuale.
+Introduciamo questo effetto nelle nostre leggi della meccanica:</p>
+<pre><code class="lang-javascript">function muovi() {
+  vx = vx + 0.1;
+  vx = 0.99 * vx;
+  x = x + vx;
+  if(x&gt;500-30) vx = -vx;
+}
+</code></pre>
+<p>Ecco: con tre semplici linee di codice, abbiamo ricreato un universo in miniatura!</p>
+<p>[Esercizio: spiegare perché l&#39;oggetto &quot;perfora&quot; le colonne d&#39;Ercole e, seppur tremolante, si avventura oltre i confini dell&#39;universo]
+[Esercizio: ]</p>
+<p>Varianti:</p>
+<p>Letture consigliate:
+<a href="https://en.wikipedia.org/wiki/Flatland">Flatlandia</a>: immagino che la botta immaginativa multidimensionale sia un&#39;esperienza obbligatoria, per un designer: Flatlandia intreccia satira sociale e trascendenza spaziale in un ordito inestricabile e psichedelico.</p>
+
+
+      </div>
+      <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)
+},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-36402304-4', 'auto');
+    ga('send', 'pageview');
+
+      </script>
+  </body>
+</html>
