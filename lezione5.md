@@ -191,19 +191,119 @@ Cosa fa l'attrito (in questo caso _dinamico_)? Agisce coma una forza opposta all
 Introduciamo questo effetto nelle nostre leggi della meccanica:
 
 ```javascript
+
 function muovi() {
   vx = vx + 0.1;
   vx = 0.99 * vx;
   x = x + vx;
   if(x>500-30) vx = -vx;
+
 }```
+
 
 Ecco: con tre semplici linee di codice, abbiamo ricreato un universo in miniatura!
 
-[Esercizio: spiegare perché l'oggetto "perfora" le colonne d'Ercole e, seppur tremolante, si avventura oltre i confini dell'universo]
-[Esercizio: ]
+[Esercizio: spiegare perché l'oggetto "perfora" le colonne d'Ercole e, seppur tremolante, si avventura oltre i confini dell'universo]()
+
+## Rien ne va plus
+
+Negli esempi visti fin ad ora, abbiamo tenute ben separate le leggi che fanno evolvere le grandezze fisiche (`x`, `vx`) dal "proiettore demiurgico " che le trasforma in grandezze geometriche nel nostro universo. In questo caso abbiamo scelto che `x` fosse una posizione spaziale, ma chi ci constringe a farlo?
+Risposta: nessuno.
+
+Per dimostrarlo, ora proviamo a disegnare la `x` come un angolo di rotazione, invece che come una distanza:
+
+
+
+Per farlo utilizziamo la proprietà `transform` di css, che consente di applicare trasformazioni lineari (rotazioni, traslazioni, omotetie etc) agli elementi.
+
+Ecco un esempio di uso di `transform` per ruotare un `div`:
+
+<p data-height="265" data-theme-id="0" data-slug-hash="worxbV" data-default-tab="css,result" data-user="fbrusch" data-embed-version="2" data-pen-title="worxbV" class="codepen">See the Pen <a href="http://codepen.io/fbrusch/pen/worxbV/">worxbV</a> by Francesco Bruschi (<a href="http://codepen.io/fbrusch">@fbrusch</a>) on <a href="http://codepen.io">CodePen</a>.</p>
+<script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
+
+Come sappiamo, è possibile ottenere lo stesso risultato con il methodo `css` di jquery:
+
+<p data-height="265" data-theme-id="0" data-slug-hash="RoLYPv" data-default-tab="css,result" data-user="fbrusch" data-embed-version="2" data-pen-title="RoLYPv" class="codepen">See the Pen <a href="http://codepen.io/fbrusch/pen/RoLYPv/">RoLYPv</a> by Francesco Bruschi (<a href="http://codepen.io/fbrusch">@fbrusch</a>) on <a href="http://codepen.io">CodePen</a>.</p>
+<script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
+
+A questo punto, riprendiamo il nostro universo fisico e colleghiamo la `x` alla rotazione di un oggetto invece che alla sua posizione.
+C'è un piccolo problema, però: mentre alla proprietà `left` nel metodo `css` possiamo passare un numero, e questo viene interpretato come numero di pixel, `transform` non è così tollerante: vuole una stringa.
+
+Non c'è problema: se `x` è un numero, e lo _sommiamo_ con l'operatore `+` ad una stringa, il risultato è una stringa concatenata con il numero (con la sua rappresentazione in base 10, per essere precisi). Provare queste righe di codice per credere:
+
+```javascript
+var x = 10;
+var msg = x + "volte"
+alert(msg)
+```
+
+Ottenere la stringa da passare a `transform` per ruotare di `x` gradi è un gioco da ragazzi:
+
+```javascript
+function disegna() {
+  $("#obj").css({
+    transform: "rotate(" + x + "deg)"
+  })
+}
+
+```
+
+<p data-height="265" data-theme-id="0" data-slug-hash="dOVqOQ" data-default-tab="js,result" data-user="fbrusch" data-embed-version="2" data-pen-title="dOVqOQ" class="codepen">See the Pen <a href="http://codepen.io/fbrusch/pen/dOVqOQ/">dOVqOQ</a> by Francesco Bruschi (<a href="http://codepen.io/fbrusch">@fbrusch</a>) on <a href="http://codepen.io">CodePen</a>.</p>
+<script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
+
+
+Ok, ora liberiamoci dal rimbalzo e dall'accellerazione, e lasciamo solo l'attrito:
+```javascript
+function muovi() {
+  vx = 0.99 * vx;
+  x = x + vx;
+
+}
+```
+
+Per aumentare la _suspence_ conviene dare un po' più di impulso iniziale:
+
+```javascript
+var vx = 10;
+```
+
+<p data-height="265" data-theme-id="0" data-slug-hash="KNXxWN" data-default-tab="css,result" data-user="fbrusch" data-embed-version="2" data-pen-title="KNXxWN" class="codepen">See the Pen <a href="http://codepen.io/fbrusch/pen/KNXxWN/">KNXxWN</a> by Francesco Bruschi (<a href="http://codepen.io/fbrusch">@fbrusch</a>) on <a href="http://codepen.io">CodePen</a>.</p>
+<script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
+
+Immaginiamo che l'oggetto sia una lancetta che indica la pallina in una roulette. Vogliamo evidenziare quando punta sul rosso e quando punta sul nero. Se immaginiamo che la ruota sia divisa in 360 spicchi, alternativamente rossi e neri, come facciamo, conoscendo l'angolo `x` della lancetta, a sapere se punta sul rosso oppure sul nero?
+
+&Egrave; semplice: vediamo se l'angolo in gradi è pari oppure è dispari.
+A seconda che l'angolo sia pari o dispari, potremmo disegnare qualcosa che indichi il colore puntato attuale. Vorremmo fare qualcosa del genere, nella funzione `disegna`:
+
+```javascript
+se x è pari, scrivi "rosso", altrimenti scrivi "nero"
+
+```
+
+La cosa si traduce facilmente in
+
+```javascript
+[...]
+  if(Math.floor(x) % 2 == 0) {
+    $("#obj").text("rosso")
+  } else {
+    $("#obj").text("nero")
+  }
+  [...]
+```
+
+E se volessimo rigirare la ruota?
+
 
 Varianti:
+<p data-height="265" data-theme-id="0" data-slug-hash="ZBKMQj" data-default-tab="js,result" data-user="fbrusch" data-embed-version="2" data-pen-title="ZBKMQj" class="codepen">See the Pen <a href="http://codepen.io/fbrusch/pen/ZBKMQj/">ZBKMQj</a> by Francesco Bruschi (<a href="http://codepen.io/fbrusch">@fbrusch</a>) on <a href="http://codepen.io">CodePen</a>.</p>
+<script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
+
+<p data-height="265" data-theme-id="0" data-slug-hash="pNPObV" data-default-tab="js,result" data-user="fbrusch" data-embed-version="2" data-pen-title="pNPObV" class="codepen">See the Pen <a href="http://codepen.io/fbrusch/pen/pNPObV/">pNPObV</a> by Francesco Bruschi (<a href="http://codepen.io/fbrusch">@fbrusch</a>) on <a href="http://codepen.io">CodePen</a>.</p>
+<script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>]
+
+[]
 
 Letture consigliate:
+
 [Flatlandia](https://en.wikipedia.org/wiki/Flatland): immagino che la botta immaginativa multidimensionale sia un'esperienza obbligatoria, per un designer: Flatlandia intreccia satira sociale e trascendenza spaziale in un ordito inestricabile e psichedelico.
