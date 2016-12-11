@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <link href='https://fonts.googleapis.com/css?family=Chivo:900' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-dark.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <title>Lcg by fbrusch</title>
+  </head>
+
+  <body>
+      <div class="inner">
+          <h1 id="fatti-trascinare">Fatti trascinare</h1>
+<p>In questo tutorial vediamo come consentire all&#39;utente di interagire con gli oggetti <em>trascinandoli</em>.</p>
+<p>Partiamo dal più semplice degli oggetti:</p>
+<pre><code class="lang-html">&lt;div id=&quot;obj&quot;&gt;&lt;/div&gt;
+</code></pre>
+<pre><code class="lang-css">#obj {
+  height: 30px;
+  width: 30px;
+  background-color: red;
+}
+</code></pre>
+<p><p data-height="265" data-theme-id="0" data-slug-hash="BQPOEm" data-default-tab="css,result" data-user="fbrusch" data-embed-version="2" data-pen-title="BQPOEm" class="codepen">See the Pen <a href="http://codepen.io/fbrusch/pen/BQPOEm/">BQPOEm</a> by Francesco Bruschi (<a href="http://codepen.io/fbrusch">@fbrusch</a>) on <a href="http://codepen.io">CodePen</a>.</p></p>
+<script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
+
+<p>Il nostro piccolo oggetto non è molto socievole: non si muove, se ne sta in un angolo, e non si lascia coinvolgere.
+C&#39;è un modo molto semplice di renderlo un po&#39; più collaborativo: un <em>metodo</em> offerto da una libreria &quot;cugina&quot; di <code>jQuery</code>, <code>jQueryUI</code>.</p>
+<p>Per usarlo, importate <code>jQueryUI</code> dopo <code>jQuery</code>. A questo punto dobbiamo solo <em>dire</em> all&#39;oggetto di diventare trascinabile (&quot;draggable&quot;), mandandogli questo segnale:</p>
+<pre><code class="lang-javascript">$(&quot;#obj&quot;).draggable()
+</code></pre>
+<p>Provate a trascinare il nostro eroe, ora!</p>
+<p><p data-height="265" data-theme-id="0" data-slug-hash="JbBagd" data-default-tab="css,result" data-user="fbrusch" data-embed-version="2" data-pen-title="JbBagd" class="codepen">See the Pen <a href="http://codepen.io/fbrusch/pen/JbBagd/">JbBagd</a> by Francesco Bruschi (<a href="http://codepen.io/fbrusch">@fbrusch</a>) on <a href="http://codepen.io">CodePen</a>.</p></p>
+<script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
+
+<p>Ok, ora che il quadrato è trascinabile, dove lo portiamo?</p>
+<p>Per esempio, potremmo voler far accadere qualcosa se il quadrato viene rilasciato all&#39;interno di un&#39;area.</p>
+<p>Cominciamo col disegnare l&#39;area.</p>
+<pre><code class="lang-html">&lt;div id=&quot;droparea&quot;&gt;&lt;/div&gt;
+</code></pre>
+<pre><code class="lang-css">#droparea {
+  position: absolute;
+  top: 100px;
+  left: 100px;
+  height: 200px;
+  width:300px;
+  border: 1px dashed black;
+}
+</code></pre>
+<p>Come faccio a definire cosa succede quando lascio l&#39;oggetto? Tramite jquery, posso specificare che venga chiamata una funzione ogni volta che l&#39;oggetto viene &quot;droppato&quot;:</p>
+<pre><code class="lang-javascript">[...]
+function quandoDroppo () {
+  alert(&quot;oggetto droppato&quot;)
+}
+
+$(&quot;#obj&quot;).on(&quot;dragstop&quot;, quandoDroppo)
+</code></pre>
+<p><p data-height="265" data-theme-id="0" data-slug-hash="woEvoL" data-default-tab="css,result" data-user="fbrusch" data-embed-version="2" data-pen-title="woEvoL" class="codepen">See the Pen <a href="http://codepen.io/fbrusch/pen/woEvoL/">woEvoL</a> by Francesco Bruschi (<a href="http://codepen.io/fbrusch">@fbrusch</a>) on <a href="http://codepen.io">CodePen</a>.</p></p>
+<script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
+
+
+<p>Il meccanismo è generale: il metodo <code>on</code> riceve due parametri, una stringa che specifica l&#39;evento (in questo caso <code>&quot;dragstop&quot;</code>, che occorre quando l&#39;elemento viene lasciato), e la funzione che viene chiamata (in questo caso <code>quandoDroppo</code>). Si dice che la funzione che viene passata diventa un &quot;event handler&quot;, cioè un gestore dell&#39;evento considerato.</p>
+<p>La cosa interessante è che, quando occorre l&#39;evento, la funzione viene chiamata passando dell&#39;informazione interessante! Per utilizzarla ci basta dichiarare dei parametri quando definiamo il nostro handler:</p>
+<pre><code class="lang-javascript">function quandoDroppo(e, ui) {
+  // qui dentro posso &quot;accedere&quot; ad e e ad ui
+}
+</code></pre>
+<p>Come faccio a sapere tutte queste cose? Semplice, le ho lette qui: <a href="http://api.jqueryui.com/draggable/#event-stop">http://api.jqueryui.com/draggable/#event-stop</a>, dove puoi trovare anche tu tutte le informazioni per controllare ogni sfumatura delle interazioni drag-and-drop...</p>
+<p>Nella documentazione c&#39;è scritto che allo <em>handler</em> per l&#39;evento <code>stop</code> vengono passati due parametri, il secondo del quale è un &quot;oggetto&quot; (&quot;object&quot;), che contiene tre &quot;campi&quot;, dei quali uno è <code>position</code>. Ora, quando abbiamo un oggetto, per accedere ad uno dei suoi campi usiamo il punto <code>.</code>. Così, dato <code>ui</code> possiamo ottenere <code>position</code> in questo modo: <code>ui.position</code>. Se poi vogliamo accedere a <code>top</code> di <code>position</code> che contiene, non sorprendentemente, la posizione verticale in cui si è fermato l&#39;oggetto, facciamo così: <code>ui.position.top</code>.</p>
+<p>Per esempio, posso comunicare il valore di <code>top</code>, quando l&#39;oggetto viene lasciato:</p>
+<pre><code class="lang-javascript">
+function quandoDroppo (e, ui) {
+  alert(ui.position.top)
+}
+</code></pre>
+<p>Esercizio: modifica l&#39;event handler di <code>dragstop</code> in modo che mandi il messaggio &quot;dentro&quot; se l&#39;oggetto è stato droppato nell&#39;area disegnata, o &quot;fuori&quot; altrimenti.</p>
+<p>Ah, una cosa semplice ma che può farci risparmiare fatica (a noi, e a chi legge il nostro codice): quando devo passare una funzione, per esempio per comunicare un event handler, non è necessario definirla prima. Posso fare così:</p>
+<pre><code class="lang-javascript">$(&quot;#obj&quot;).on(&quot;dragstop&quot;, function(e, ui) {alert(ui.position.top)})
+</code></pre>
+<p>La funzione che ho passato non l&#39;ho definita prima, dandogli un nome. E difatti queste funzioni si chiamano &quot;anonime&quot; (o anche funzioni lambda, per ragioni storiche informatiche).</p>
+<p>Un altro evento interessante che possiamo gestire (a volte si usa il termine evocativo &quot;intercettare&quot;) è il semplice movimento dell&#39;oggetto draggato.
+Esempio:</p>
+<pre><code class="lang-javascript">[...]
+$(&quot;#obj&quot;).on(&quot;drag&quot;, function(e, ui) {
+  if(ui.position.left &gt; 100 || ui.position.top &gt; 100) {
+    alert(&quot;non starai andando troppo lontano?&quot;)
+})
+[...]
+</code></pre>
+<p>In questo modo possiamo controllare finemente il comportamento dei nostri oggetti draggati.</p>
+<p>Esercizio: realizza una pagina nella quale ci sono tre oggetti, c&#39;è un&#39;area in cui gli oggetti vanno trascinati, e quando tutti gli oggetti sono stati trascinati nell&#39;area, all&#39;utente viene presentato un alert con messaggio &quot;Bella zio!&quot;</p>
+
+
+      </div>
+      <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)
+},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-36402304-4', 'auto');
+    ga('send', 'pageview');
+
+      </script>
+  </body>
+</html>
