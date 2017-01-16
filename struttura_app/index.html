@@ -1,0 +1,65 @@
+<html><head><script src="assets/jquery.min.js"></script><style>body {
+    margin: 0;
+    padding: 0;
+}
+
+div.img.visible {
+    opacity: 1;
+    transition: opacity 3s;
+}
+
+div.img {
+    position:absolute;
+    top:0; left:0;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: contain;
+    width: 100vw;
+    height: 100vh;
+    opacity: 0;
+    transition: opacity 4s; 
+
+} 
+
+
+#img0 {
+    background-image: url('assets/0.jpg');
+}
+#img1 {
+    background-image: url('assets/1.jpg');
+}
+#img2 {
+    background-image: url('assets/2.jpg');
+}
+#img3 {
+    background-image: url('assets/3.jpg');
+}
+
+#universe {
+    width:50%;
+    height:50%;
+    border: 1px solid black;
+}
+</style></head><body><div id="img0" class="img"></div><div id="img1" class="img"></div><div id="img2" class="img"></div><div id="img25" class="img"><div id="universe"><button id="b1">vai a destra</button><button id="b2">vai a sinistra</button></div></div><div id="img3" class="img"></div><script>show = functino(imgNumber) {
+    $("div.img").removeClass("visible").css({"z-index":-1})
+    $("#img" + imgNumber).addClass("visible").css({"z-index":1})
+    
+}
+
+showSup = function(imgNumber) {
+    $("div.img").css({"z-index":-1})
+    $("#img" + imgNumber).addClass("visible").css({"z-index":1})
+}
+
+setTimeout(()=>show(1), 0)
+setTimeout(()=>show(2), 10000)
+setTimeout(()=>show(3), 20000)
+setTimeout(()=>show(4), 30000)
+setTimeout(()=>show(5), 40000)
+setTimeout(()=>show(25), 50000)
+
+vaiADestra = () => show(2)
+vaiASinistra = () => show(3)
+
+$("#b1").click(vaiADestra)
+$("#b2").click(vaiASinistra)</script></body></html>
